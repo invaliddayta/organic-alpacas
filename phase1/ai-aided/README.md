@@ -33,8 +33,8 @@ All numbers come from `results/` and are collected in `results/key_numbers.json`
    In training, late blight is 28% of the darkest 1% of images (3.5% overall), because one capture session ("GHLB_PS", 118 images) was shot
    dark on black: 117 of its images are in the darkest 1%. (Fig 4)
 5. **The background carries class information and the model uses part of it.** The border colour alone (3 numbers, 15-NN on training images)
-   gives 51% accuracy on the test set (chance 2.6%), which replicates Noyan (2022). Our model, with the leaf removed, still names the right class
-   12% of the time. Pasting the same leaf onto a background from another class lowers accuracy from 96% (same-class control) to 84%; flat
+   gives 51% accuracy on the full test set (40% on the class-balanced subset in Fig 5; chance 2.6%), in line with Noyan (2022), who got 49% from
+   8 background pixels. Our model, with the leaf removed, still names the right class 12% of the time. Pasting the same leaf onto a background from another class lowers accuracy from 96% (same-class control) to 84%; flat
    backgrounds: grey 86%, white 75%, black 56%. (Fig 5)
 6. **Near-duplicates do not explain the accuracy.** 135 test images have a near-copy in training (pixel correlation > 0.93) and only 1 of them
    is wrong. Errors are 4x more common when the most similar training image belongs to another class (1.8% vs 0.45%). One near-copy pair
