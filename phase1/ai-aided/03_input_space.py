@@ -11,6 +11,7 @@ Outputs
 - results/border_colour.parquet: border colour stats for every image (train and test).
 - results/border_knn.json: accuracy of a k-NN classifier that only sees the border colour
   (dataset-bias check, cf. Noyan 2022), compared with chance.
+- results/image_brightness.parquet: mean luminance (0-255) of every train and test image.
 Thumbnails are cached in cache/ (gitignored). Runtime about 5 min.
 """
 import json
@@ -54,6 +55,19 @@ def load_or_compute(name, ds):
     return thumbs, border
 
 
+def write_brightness(train, test, tr_thumbs, te_thumbs):
+    w = np.array([0.299, 0.587, 0.114], np.float32)
+    lum = lambda t: (t.astype(np.float32) @ w).mean((1, 2))
+    df = pd.DataFrame({
+        "split": ["train"] * len(tr_thumbs) + ["test"] * len(te_thumbs),
+        "idx_in_split": np.concatenate([np.arange(len(tr_thumbs)), np.arange(len(te_thumbs))]),
+        "class_idx": np.concatenate([np.asarray(train["class_idx"]), np.asarray(test["class_idx"])]),
+        "luminance": np.concatenate([lum(tr_thumbs), lum(te_thumbs)]).astype(np.float32),
+    })
+    df.to_parquet(pv.RESULTS / "image_brightness.parquet", index=False)
+    return df
+
+
 def standardise(thumbs):
     x = thumbs.reshape(len(thumbs), -1).astype(np.float32)
     x -= x.mean(1, keepdims=True)
@@ -67,6 +81,7 @@ def main():
     tr_thumbs, tr_border = load_or_compute("train", train)
     te_thumbs, te_border = load_or_compute("test", test)
     print(f"descriptors done {time.time() - t0:.0f}s", flush=True)
+    write_brightness(train, test, tr_thumbs, te_thumbs)
     y_tr = np.asarray(train["class_idx"])
     y_te = np.asarray(test["class_idx"])
 

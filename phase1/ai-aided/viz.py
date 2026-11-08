@@ -11,7 +11,7 @@ OI = {
     "yellow": "#F0E442", "blue": "#0072B2", "vermillion": "#D55E00", "purple": "#CC79A7",
     "grey": "#999999",
 }
-GROUP_COLOURS = {"lighting": OI["orange"], "colour": OI["vermillion"],
+GROUP_COLOURS = {"lighting": OI["orange"], "colour": OI["purple"],
                  "sharpness": OI["blue"], "geometry": OI["green"], "background": OI["purple"]}
 
 

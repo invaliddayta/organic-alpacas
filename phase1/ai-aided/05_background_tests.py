@@ -6,19 +6,24 @@ Conditions per image
 - leaf on grey / black / white: background replaced by a flat colour
   (grey = median border colour of all training images);
 - background only: leaf removed (dilated mask inpainted from the surrounding background);
+- background corners only: the leaf-free 48 px corner patches tiled to a full image (does not
+  depend on the mask being exact inside the image);
 - swap (other class) x2: the leaf pasted onto the background of a random usable image
   of another class (whose leaf was removed the same way);
 - swap (same class): same, donor from the same class but another image (control for
-  pasting artefacts).
+  pasting artefacts);
+- darker / brighter applied to the whole image, to the leaf only or to the background only
+  (brightness x0.25 and x2.2, strength 4 of the sweep): which region triggers the sink class?
 Writes results/background_tests.parquet (one row per image and condition, with the
 probability of the leaf's class and of the donor background's class) and
-results/background_masks_meta.parquet. Runtime about 8 min.
+results/background_masks_meta.parquet. Runtime about 15 min.
 """
 import time
 
 import numpy as np
 import pandas as pd
 
+import perturb
 import pv
 import segment as sg
 
@@ -57,23 +62,36 @@ def main():
     bg_only = {int(i): sg.background_only(images[int(i)], masks[int(i)]) for i in ids}
     print(f"inpainting done ({time.time() - t0:.0f}s)", flush=True)
 
-    jobs = []  # (sample_idx, condition, donor_idx, image)
+    # jobs hold a recipe, not the image, so that memory stays small (images are built lazily)
+    jobs = []  # (sample_idx, condition, donor_idx, make_image)
     for i, c in zip(ids, cls):
         i = int(i)
-        jobs.append((i, "original", -1, images[i]))
+        im, m = images[i], masks[i]
+        jobs.append((i, "original", -1, lambda im=im: im))
         for name, col in colours.items():
-            jobs.append((i, name, -1, sg.leaf_on_colour(images[i], masks[i], col)))
-        jobs.append((i, "background only", i, bg_only[i]))
+            jobs.append((i, name, -1, lambda im=im, m=m, col=col: sg.leaf_on_colour(im, m, col)))
+        jobs.append((i, "background only", i, lambda i=i: bg_only[i]))
+        tex = sg.corner_texture(im, m)
+        if tex is not None:  # leaf-free corner patches only (robust to mask errors)
+            jobs.append((i, "background corners only", i, lambda tex=tex: tex))
         other = ids[cls != c]
-        for k, d in enumerate(rng.choice(other, 2, replace=False)):
-            jobs.append((i, "swap: other class", int(d), sg.leaf_on_background(images[i], masks[i], bg_only[int(d)])))
+        for d in rng.choice(other, 2, replace=False):
+            jobs.append((i, "swap: other class", int(d),
+                         lambda im=im, m=m, d=int(d): sg.leaf_on_background(im, m, bg_only[d])))
+        for fam, f in [("darker", 0.25), ("brighter", 2.2)]:
+            jobs.append((i, f"{fam} x{f}: whole image", -1, lambda im=im, f=f: perturb.brightness(im, f)))
+            jobs.append((i, f"{fam} x{f}: leaf only", -1,
+                         lambda im=im, m=m, f=f: sg.leaf_on_background(perturb.brightness(im, f), m, im)))
+            jobs.append((i, f"{fam} x{f}: background only", -1,
+                         lambda im=im, m=m, f=f: sg.leaf_on_background(im, m, perturb.brightness(im, f))))
         same = ids[(cls == c) & (ids != i)]
         if len(same):
             d = int(rng.choice(same))
-            jobs.append((i, "swap: same class", d, sg.leaf_on_background(images[i], masks[i], bg_only[d])))
+            jobs.append((i, "swap: same class", d, lambda im=im, m=m, d=d: sg.leaf_on_background(im, m, bg_only[d])))
+    print(f"{len(jobs)} model calls", flush=True)
 
     model = pv.load_model()
-    probs = pv.predict_images(model, (j[3] for j in jobs))
+    probs = pv.predict_images(model, (j[3]() for j in jobs))
     s = pv.summarize_probs(probs)
     true = labels[[j[0] for j in jobs]]
     donor = np.array([j[2] for j in jobs])
@@ -94,8 +112,8 @@ def main():
     # small visual check sheet for the report (not committed)
     from PIL import Image
     ex = [j for j in jobs if j[0] in set(ids[:: max(1, len(ids) // 6)][:6])]
-    tiles = [np.asarray(j[3].resize((112, 112))) for j in ex[:6 * 7]]
-    rows = [np.concatenate(tiles[r * 7:(r + 1) * 7], 1) for r in range(len(tiles) // 7)]
+    tiles = [np.asarray(j[3]().resize((112, 112))) for j in ex[:6 * 15]]
+    rows = [np.concatenate(tiles[r * 15:(r + 1) * 15], 1) for r in range(len(tiles) // 15)]
     (pv.HERE / "cache").mkdir(exist_ok=True)
     Image.fromarray(np.concatenate(rows, 0)).save(pv.HERE / "cache" / "background_examples.png")
 

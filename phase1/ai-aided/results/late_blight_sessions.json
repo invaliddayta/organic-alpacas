@@ -1,0 +1,31 @@
+{
+ "darkest_1pct_luminance": 76.5,
+ "train_sessions": {
+  "Late": {
+   "n_train": 736,
+   "n_in_darkest_1pct": 1,
+   "median_luminance": 118.0
+  },
+  "GHLB2": {
+   "n_train": 615,
+   "n_in_darkest_1pct": 4,
+   "median_luminance": 119.8
+  },
+  "GHLB_PS": {
+   "n_train": 118,
+   "n_in_darkest_1pct": 117,
+   "median_luminance": 29.4
+  },
+  "GHLB": {
+   "n_train": 57,
+   "n_in_darkest_1pct": 0,
+   "median_luminance": 118.8
+  },
+  "GH_HL": {
+   "n_train": 1,
+   "n_in_darkest_1pct": 0,
+   "median_luminance": 109.7
+  }
+ },
+ "GHLB_PS_in_test": 32
+}

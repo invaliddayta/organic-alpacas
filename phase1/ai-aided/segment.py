@@ -87,3 +87,22 @@ def leaf_on_background(img: Image.Image, mask: np.ndarray, background: Image.Ima
     bg = np.asarray(background.convert("RGB")).astype(np.float32)
     soft = cv2.GaussianBlur(mask.astype(np.float32), (5, 5), 0)[..., None]
     return Image.fromarray((rgb * soft + bg * (1 - soft)).clip(0, 255).astype(np.uint8))
+
+
+def corner_texture(img: Image.Image, mask: np.ndarray, patch: int = 48, margin: int = 12):
+    """Background texture only, robust to mask errors: take the 4 corner patches that
+    contain no leaf pixels (mask dilated by `margin`), and tile them (mirrored, so that
+    seams are smooth) to a full-size image. Returns None if no corner is leaf-free."""
+    rgb = np.asarray(img.convert("RGB"))
+    h, w = mask.shape
+    m = cv2.dilate(mask.astype(np.uint8), np.ones((2 * margin + 1, 2 * margin + 1), np.uint8)) > 0
+    corners = [(0, 0), (0, w - patch), (h - patch, 0), (h - patch, w - patch)]
+    clean = [rgb[y:y + patch, x:x + patch] for y, x in corners if not m[y:y + patch, x:x + patch].any()]
+    if not clean:
+        return None
+    tiles = [clean[k % len(clean)] for k in range(4)]
+    block = np.concatenate([np.concatenate([tiles[0], tiles[1][:, ::-1]], 1),
+                            np.concatenate([tiles[2][::-1], tiles[3][::-1, ::-1]], 1)], 0)
+    reps = int(np.ceil(h / block.shape[0]))
+    full = np.tile(block, (reps, reps, 1))[:h, :w]
+    return Image.fromarray(np.ascontiguousarray(full))
