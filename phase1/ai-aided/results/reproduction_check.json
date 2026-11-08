@@ -1,0 +1,36 @@
+{
+  "n_test": 10948,
+  "metadata_order_matches": true,
+  "accuracy_reproduced": 0.9903178662769455,
+  "accuracy_shared": 0.9902265253927658,
+  "pred_idx_mismatches": 1,
+  "max_abs_prob_diff": 0.0027047395706176758,
+  "mean_abs_conf_diff": 1.4808292986922426e-05,
+  "seconds": 365.8,
+  "mismatches": [
+    {
+      "sample_idx": 7479,
+      "true_idx": 28,
+      "shared_top2": [
+        [
+          35,
+          0.48356
+        ],
+        [
+          28,
+          0.48181
+        ]
+      ],
+      "reproduced_top2": [
+        [
+          28,
+          0.48272
+        ],
+        [
+          35,
+          0.48262
+        ]
+      ]
+    }
+  ]
+}
