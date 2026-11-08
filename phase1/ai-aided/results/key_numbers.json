@@ -1,0 +1,671 @@
+{
+ "errors": 107,
+ "errors_within_crop": 83,
+ "cross_crop_same_disease": 12,
+ "cross_crop_healthy_to_healthy": 6,
+ "runner_up_same_crop_pct": 37.2,
+ "chance_same_crop_pct": 10.3,
+ "grouped_errors": 90,
+ "grouped_error_leaves": 51,
+ "null_leaves_mean": 84.7,
+ "null_leaves_95": [
+  81,
+  88
+ ],
+ "p_other_wrong_given_wrong_pct": 38.3,
+ "p_other_wrong_given_correct_pct": 0.4,
+ "tbs_ylcv_errors": 18,
+ "tbs_ylcv_leaves": 7,
+ "tbs_b_median": {
+  "correct": 13.4,
+  "error": 42.2,
+  "ylcv": 27.6
+ },
+ "sweep_n": 1512,
+ "sweep_ref_acc": 0.9854,
+ "sweep": {
+  "darker|1": {
+   "level": 0.8,
+   "acc": 0.972,
+   "flip": 0.015,
+   "sink": "Apple: healthy",
+   "sink_share": 0.119
+  },
+  "darker|2": {
+   "level": 0.6,
+   "acc": 0.909,
+   "flip": 0.081,
+   "sink": "Apple: healthy",
+   "sink_share": 0.188
+  },
+  "darker|3": {
+   "level": 0.4,
+   "acc": 0.671,
+   "flip": 0.325,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.439
+  },
+  "darker|4": {
+   "level": 0.25,
+   "acc": 0.247,
+   "flip": 0.753,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.862
+  },
+  "brighter|1": {
+   "level": 1.25,
+   "acc": 0.965,
+   "flip": 0.032,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.302
+  },
+  "brighter|2": {
+   "level": 1.5,
+   "acc": 0.893,
+   "flip": 0.106,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.383
+  },
+  "brighter|3": {
+   "level": 1.8,
+   "acc": 0.722,
+   "flip": 0.276,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.398
+  },
+  "brighter|4": {
+   "level": 2.2,
+   "acc": 0.527,
+   "flip": 0.475,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.344
+  },
+  "low contrast|1": {
+   "level": 0.8,
+   "acc": 0.981,
+   "flip": 0.01,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.172
+  },
+  "low contrast|2": {
+   "level": 0.6,
+   "acc": 0.93,
+   "flip": 0.064,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.198
+  },
+  "low contrast|3": {
+   "level": 0.4,
+   "acc": 0.752,
+   "flip": 0.245,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.357
+  },
+  "low contrast|4": {
+   "level": 0.25,
+   "acc": 0.417,
+   "flip": 0.583,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.726
+  },
+  "high contrast|1": {
+   "level": 1.25,
+   "acc": 0.962,
+   "flip": 0.028,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.193
+  },
+  "high contrast|2": {
+   "level": 1.5,
+   "acc": 0.885,
+   "flip": 0.106,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.195
+  },
+  "high contrast|3": {
+   "level": 2.0,
+   "acc": 0.683,
+   "flip": 0.313,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.267
+  },
+  "high contrast|4": {
+   "level": 2.5,
+   "acc": 0.507,
+   "flip": 0.492,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.34
+  },
+  "uneven light|1": {
+   "level": 0.2,
+   "acc": 0.983,
+   "flip": 0.005,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.2
+  },
+  "uneven light|2": {
+   "level": 0.4,
+   "acc": 0.978,
+   "flip": 0.009,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.147
+  },
+  "uneven light|3": {
+   "level": 0.6,
+   "acc": 0.961,
+   "flip": 0.026,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.153
+  },
+  "uneven light|4": {
+   "level": 0.8,
+   "acc": 0.929,
+   "flip": 0.06,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.206
+  },
+  "warm light|1": {
+   "level": 0.05,
+   "acc": 0.979,
+   "flip": 0.013,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.129
+  },
+  "warm light|2": {
+   "level": 0.1,
+   "acc": 0.948,
+   "flip": 0.046,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.167
+  },
+  "warm light|3": {
+   "level": 0.2,
+   "acc": 0.847,
+   "flip": 0.151,
+   "sink": "Pepper: Bacterial spot",
+   "sink_share": 0.19
+  },
+  "warm light|4": {
+   "level": 0.3,
+   "acc": 0.701,
+   "flip": 0.296,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.252
+  },
+  "cool light|1": {
+   "level": -0.05,
+   "acc": 0.978,
+   "flip": 0.015,
+   "sink": "Apple: healthy",
+   "sink_share": 0.212
+  },
+  "cool light|2": {
+   "level": -0.1,
+   "acc": 0.929,
+   "flip": 0.063,
+   "sink": "Apple: healthy",
+   "sink_share": 0.243
+  },
+  "cool light|3": {
+   "level": -0.2,
+   "acc": 0.771,
+   "flip": 0.229,
+   "sink": "Strawberry: healthy",
+   "sink_share": 0.19
+  },
+  "cool light|4": {
+   "level": -0.3,
+   "acc": 0.527,
+   "flip": 0.473,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.341
+  },
+  "hue to yellow|1": {
+   "level": -5.0,
+   "acc": 0.986,
+   "flip": 0.005,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.143
+  },
+  "hue to yellow|2": {
+   "level": -10.0,
+   "acc": 0.977,
+   "flip": 0.014,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.114
+  },
+  "hue to yellow|3": {
+   "level": -20.0,
+   "acc": 0.929,
+   "flip": 0.062,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.148
+  },
+  "hue to yellow|4": {
+   "level": -30.0,
+   "acc": 0.819,
+   "flip": 0.176,
+   "sink": "Peach: Bacterial spot",
+   "sink_share": 0.153
+  },
+  "hue to blue|1": {
+   "level": 5.0,
+   "acc": 0.985,
+   "flip": 0.003,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.217
+  },
+  "hue to blue|2": {
+   "level": 10.0,
+   "acc": 0.978,
+   "flip": 0.01,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.182
+  },
+  "hue to blue|3": {
+   "level": 20.0,
+   "acc": 0.954,
+   "flip": 0.035,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.229
+  },
+  "hue to blue|4": {
+   "level": 30.0,
+   "acc": 0.906,
+   "flip": 0.083,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.183
+  },
+  "desaturate|1": {
+   "level": 0.75,
+   "acc": 0.981,
+   "flip": 0.009,
+   "sink": "Apple: healthy",
+   "sink_share": 0.25
+  },
+  "desaturate|2": {
+   "level": 0.5,
+   "acc": 0.87,
+   "flip": 0.124,
+   "sink": "Apple: healthy",
+   "sink_share": 0.376
+  },
+  "desaturate|3": {
+   "level": 0.25,
+   "acc": 0.48,
+   "flip": 0.515,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.304
+  },
+  "desaturate|4": {
+   "level": 0.0,
+   "acc": 0.217,
+   "flip": 0.778,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.393
+  },
+  "oversaturate|1": {
+   "level": 1.25,
+   "acc": 0.98,
+   "flip": 0.012,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.2
+  },
+  "oversaturate|2": {
+   "level": 1.5,
+   "acc": 0.96,
+   "flip": 0.034,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.35
+  },
+  "oversaturate|3": {
+   "level": 2.0,
+   "acc": 0.877,
+   "flip": 0.118,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.452
+  },
+  "oversaturate|4": {
+   "level": 3.0,
+   "acc": 0.645,
+   "flip": 0.353,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.492
+  },
+  "gaussian blur|1": {
+   "level": 0.5,
+   "acc": 0.986,
+   "flip": 0.006,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.333
+  },
+  "gaussian blur|2": {
+   "level": 1.0,
+   "acc": 0.895,
+   "flip": 0.097,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.579
+  },
+  "gaussian blur|3": {
+   "level": 2.0,
+   "acc": 0.575,
+   "flip": 0.421,
+   "sink": "Cherry: Powdery mildew",
+   "sink_share": 0.28
+  },
+  "gaussian blur|4": {
+   "level": 4.0,
+   "acc": 0.219,
+   "flip": 0.78,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.787
+  },
+  "motion blur|1": {
+   "level": 3.0,
+   "acc": 0.937,
+   "flip": 0.054,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.695
+  },
+  "motion blur|2": {
+   "level": 5.0,
+   "acc": 0.821,
+   "flip": 0.169,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.683
+  },
+  "motion blur|3": {
+   "level": 9.0,
+   "acc": 0.646,
+   "flip": 0.347,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.396
+  },
+  "motion blur|4": {
+   "level": 15.0,
+   "acc": 0.479,
+   "flip": 0.517,
+   "sink": "Cherry: Powdery mildew",
+   "sink_share": 0.333
+  },
+  "jpeg|1": {
+   "level": 50.0,
+   "acc": 0.973,
+   "flip": 0.019,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.171
+  },
+  "jpeg|2": {
+   "level": 20.0,
+   "acc": 0.919,
+   "flip": 0.072,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.311
+  },
+  "jpeg|3": {
+   "level": 10.0,
+   "acc": 0.677,
+   "flip": 0.314,
+   "sink": "Soybean: healthy",
+   "sink_share": 0.258
+  },
+  "jpeg|4": {
+   "level": 5.0,
+   "acc": 0.294,
+   "flip": 0.702,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.297
+  },
+  "noise|1": {
+   "level": 0.02,
+   "acc": 0.977,
+   "flip": 0.016,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.257
+  },
+  "noise|2": {
+   "level": 0.05,
+   "acc": 0.851,
+   "flip": 0.145,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.42
+  },
+  "noise|3": {
+   "level": 0.1,
+   "acc": 0.335,
+   "flip": 0.666,
+   "sink": "Tomato: Septoria leaf spot",
+   "sink_share": 0.514
+  },
+  "noise|4": {
+   "level": 0.15,
+   "acc": 0.104,
+   "flip": 0.896,
+   "sink": "Corn: Common rust",
+   "sink_share": 0.484
+  },
+  "rotate|1": {
+   "level": 180.0,
+   "acc": 0.987,
+   "flip": 0.007,
+   "sink": "Tomato: Yellow leaf curl",
+   "sink_share": 0.25
+  },
+  "rotate|2": {
+   "level": 90.0,
+   "acc": 0.944,
+   "flip": 0.055,
+   "sink": "Apple: healthy",
+   "sink_share": 0.262
+  },
+  "rotate|3": {
+   "level": 15.0,
+   "acc": 0.98,
+   "flip": 0.015,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.3
+  },
+  "rotate|4": {
+   "level": 45.0,
+   "acc": 0.939,
+   "flip": 0.052,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.239
+  },
+  "zoom in|1": {
+   "level": 0.9,
+   "acc": 0.981,
+   "flip": 0.011,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.379
+  },
+  "zoom in|2": {
+   "level": 0.75,
+   "acc": 0.936,
+   "flip": 0.062,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.34
+  },
+  "zoom in|3": {
+   "level": 0.6,
+   "acc": 0.659,
+   "flip": 0.335,
+   "sink": "Corn: healthy",
+   "sink_share": 0.198
+  },
+  "zoom in|4": {
+   "level": 0.45,
+   "acc": 0.319,
+   "flip": 0.679,
+   "sink": "Cherry: Powdery mildew",
+   "sink_share": 0.22
+  },
+  "zoom out|1": {
+   "level": 0.9,
+   "acc": 0.97,
+   "flip": 0.024,
+   "sink": "Tomato: Early blight",
+   "sink_share": 0.239
+  },
+  "zoom out|2": {
+   "level": 0.75,
+   "acc": 0.864,
+   "flip": 0.13,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.478
+  },
+  "zoom out|3": {
+   "level": 0.6,
+   "acc": 0.504,
+   "flip": 0.493,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.804
+  },
+  "zoom out|4": {
+   "level": 0.45,
+   "acc": 0.183,
+   "flip": 0.817,
+   "sink": "Tomato: Late blight",
+   "sink_share": 0.868
+  }
+ },
+ "background": {
+  "background corners only": {
+   "n": 1279,
+   "acc": 0.127,
+   "donor": 0.0
+  },
+  "background only": {
+   "n": 1400,
+   "acc": 0.117,
+   "donor": 0.0
+  },
+  "brighter x2.2: background only": {
+   "n": 1400,
+   "acc": 0.791,
+   "donor": 0.0
+  },
+  "brighter x2.2: leaf only": {
+   "n": 1400,
+   "acc": 0.757,
+   "donor": 0.0
+  },
+  "brighter x2.2: whole image": {
+   "n": 1400,
+   "acc": 0.515,
+   "donor": 0.0
+  },
+  "darker x0.25: background only": {
+   "n": 1400,
+   "acc": 0.825,
+   "donor": 0.0
+  },
+  "darker x0.25: leaf only": {
+   "n": 1400,
+   "acc": 0.579,
+   "donor": 0.0
+  },
+  "darker x0.25: whole image": {
+   "n": 1400,
+   "acc": 0.25,
+   "donor": 0.0
+  },
+  "leaf on black": {
+   "n": 1400,
+   "acc": 0.556,
+   "donor": 0.0
+  },
+  "leaf on grey": {
+   "n": 1400,
+   "acc": 0.856,
+   "donor": 0.0
+  },
+  "leaf on white": {
+   "n": 1400,
+   "acc": 0.749,
+   "donor": 0.0
+  },
+  "original": {
+   "n": 1400,
+   "acc": 0.984,
+   "donor": 0.0
+  },
+  "swap: other class": {
+   "n": 2757,
+   "acc": 0.837,
+   "donor": 0.018
+  },
+  "swap: same class": {
+   "n": 1400,
+   "acc": 0.964,
+   "donor": 0.0
+  }
+ },
+ "border_knn_test_acc": 0.513,
+ "border_knn_subset_acc": 0.396,
+ "dark_sink": {
+  "background corners only": {
+   "k": 33,
+   "n": 1240
+  },
+  "background only": {
+   "k": 552,
+   "n": 1360
+  },
+  "brighter x2.2: background only": {
+   "k": 33,
+   "n": 1360
+  },
+  "brighter x2.2: leaf only": {
+   "k": 22,
+   "n": 1360
+  },
+  "brighter x2.2: whole image": {
+   "k": 52,
+   "n": 1360
+  },
+  "darker x0.25: background only": {
+   "k": 154,
+   "n": 1360
+  },
+  "darker x0.25: leaf only": {
+   "k": 72,
+   "n": 1360
+  },
+  "darker x0.25: whole image": {
+   "k": 894,
+   "n": 1360
+  },
+  "leaf on black": {
+   "k": 355,
+   "n": 1360
+  },
+  "leaf on grey": {
+   "k": 96,
+   "n": 1360
+  },
+  "leaf on white": {
+   "k": 64,
+   "n": 1360
+  },
+  "original": {
+   "k": 1,
+   "n": 1360
+  },
+  "swap: other class": {
+   "k": 45,
+   "n": 2679
+  },
+  "swap: same class": {
+   "k": 5,
+   "n": 1360
+  }
+ },
+ "train_dark_n": 434,
+ "train_dark_tlb": 122,
+ "train_tlb_share_pct": 3.5,
+ "near_copies": 135,
+ "near_copy_errors": 1,
+ "err_rate_other_closer_pct": 1.81,
+ "err_rate_own_closer_pct": 0.45
+}

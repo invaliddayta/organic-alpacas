@@ -3,7 +3,7 @@
 For every condition in perturb.FAMILIES (18 families x 4 strengths) the model is run on
 the modified images; outputs are compared with the same images unmodified, run through
 the same CPU pipeline ("reference"). Writes results/perturbation_sweep.parquet with one
-row per image and condition. Runtime about 30-40 min on 8 CPU cores.
+row per image and condition. Runtime about 50 min on 8 CPU cores (about 40 s per condition).
 """
 import time
 

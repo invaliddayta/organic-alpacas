@@ -13,7 +13,6 @@ Reads only cached results (no dataset, no model).
 import base64
 import json
 
-import numpy as np
 import pandas as pd
 
 import figures

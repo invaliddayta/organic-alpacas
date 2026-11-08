@@ -296,9 +296,10 @@ def fig_sweep(summary, path):
                 txt[r][k - 1] = f"{lvs}\n{100 * d.loc[k, 'acc']:.0f}%"
         if 4 in d.index and d.loc[4, "n_wrong"] >= 20:
             s4 = d.loc[4]
-            sink_txt.append(f"{s4['sink']}  {100 * s4['sink_share']:.0f}%  ({s4['sink_n']}/{s4['n_wrong']})")
+            sink_txt.append((f"{s4['sink']}  {100 * s4['sink_share']:.0f}%  ({s4['sink_n']}/{s4['n_wrong']})",
+                             s4["sink_share"]))
         else:
-            sink_txt.append("")
+            sink_txt.append(("", 0))
     fig, ax = plt.subplots(figsize=(15, 12.5))
     im = ax.imshow(A, cmap="viridis", vmin=0, vmax=1, aspect="auto")
     for r in range(len(fams)):
@@ -306,10 +307,13 @@ def fig_sweep(summary, path):
             if txt[r][k]:
                 ax.text(k, r, txt[r][k], ha="center", va="center", fontsize=11,
                         color="white" if A[r, k] < 0.6 else "black")
-        ax.text(3.6, r, sink_txt[r], ha="left", va="center", fontsize=12)
+        t, sh_ = sink_txt[r]
+        ax.text(3.6, r, t, ha="left", va="center", fontsize=12,
+                color=OI["black"] if sh_ >= 0.3 else OI["grey"], fontweight="bold" if sh_ >= 0.5 else "normal")
     groups = [perturb.FAMILIES[f][2] for f in fams]
     ax.set_yticks(range(len(fams)))
-    ax.set_yticklabels([f"{f}  ({perturb.FAMILIES[f][3]})" for f in fams], fontsize=12)
+    ax.set_yticklabels([f"{f}  ({perturb.FAMILIES[f][3]})" if f != "rotate" else "rotate  (degrees; 180 = flip control)"
+                        for f in fams], fontsize=12)
     for t, g in zip(ax.get_yticklabels(), groups):
         t.set_color(viz.GROUP_COLOURS[g])
     for r in range(1, len(fams)):
@@ -319,14 +323,15 @@ def fig_sweep(summary, path):
     ax.set_xticklabels(["strength 1", "2", "3", "4"])
     ax.xaxis.tick_top()
     ax.set_xlim(-0.5, 3.5)
-    ax.text(3.6, -0.85, "most common wrong class at strength 4\n(share of all wrong predictions)",
+    ax.text(3.6, -0.85, "sink: most common wrong class at strength 4\n(share of all wrong predictions; grey < 30%)",
             fontsize=12.5, fontweight="bold", va="bottom")
     cb = fig.colorbar(im, ax=ax, orientation="horizontal", fraction=0.03, pad=0.02, aspect=40)
-    cb.set_label(f"accuracy on {int(base.n):,} test images (40 per class); unmodified: {100 * base.acc:.1f}%")
+    cb.set_label(f"accuracy on the same {int(base.n):,} test images (40 per class, Potato healthy 32); unmodified: {100 * base.acc:.1f}%")
     ax.set_title("", pad=40)
-    fig.suptitle("Simple capture changes break the 99% model, and the wrong predictions collapse into a few 'sink' classes",
-                 x=0.02, ha="left", y=0.995)
-    fig.text(0.02, 0.955, "cell = parameter value and accuracy; row label colour = group "
+    fig.suptitle("Capture changes break the 99% model and its wrong answers collapse into a few sink classes:\n"
+                 "dark, low-contrast, blurred or zoomed-out leaves become 'Tomato late blight'",
+                 x=0.02, ha="left", y=1.02)
+    fig.text(0.02, 0.952, "cell = parameter value and accuracy; row label colour = group "
              "(orange = lighting, pink = colour, blue = sharpness, green = geometry)", fontsize=12.5, ha="left")
     viz.save(fig, path)
 
@@ -512,66 +517,6 @@ def fig_background(bg, names, path):
                  f"{100 * a_bo:.0f}% of cases (chance 2.6%)", x=0.02, ha="left", y=1.06)
     viz.save(fig, path)
     return S, knn_acc
-
-
-# ----------------------------------------------------------------------------- supporting figures
-def fig_class_vulnerability(sw, names, path, rank=3):
-    import perturb
-    _, _, short, order = class_meta(names)
-    fams = list(perturb.FAMILIES)
-    d = sw[(sw["rank"] == rank) & sw.family.isin(fams)]
-    M = d.groupby(["true_idx", "family"]).flipped.mean().unstack().reindex(index=order, columns=fams)
-    base_err = sw[sw.family == "none"].groupby("true_idx").correct.mean().reindex(order)
-    fig, ax = plt.subplots(figsize=(17, 14))
-    im = ax.imshow(100 * M.to_numpy(), cmap="magma_r", vmin=0, vmax=100, aspect="auto")
-    ax.set_yticks(range(38))
-    ax.set_yticklabels([short[i] for i in order], fontsize=11.5)
-    lv = {f: perturb.FAMILIES[f][1][rank - 1] for f in fams}
-    ax.set_xticks(range(len(fams)))
-    ax.set_xticklabels([f"{f} ({lv[f]:g})" for f in fams], rotation=50, ha="right", fontsize=12)
-    for r in range(38):
-        for c in range(len(fams)):
-            v = 100 * M.iat[r, c]
-            if v >= 50:
-                ax.text(c, r, f"{v:.0f}", ha="center", va="center", fontsize=8.5, color="white")
-    cb = fig.colorbar(im, ax=ax, shrink=0.5, pad=0.01)
-    cb.set_label("% of the class's images whose prediction changes (n=40 per class)")
-    worst = M.mean(1).sort_values(ascending=False)
-    ax.set_title(f"Per class and change (strength {rank}): fragility differs a lot between classes. Most fragile on average: "
-                 f"{short[worst.index[0]]} ({100 * worst.iloc[0]:.0f}%), {short[worst.index[1]]} ({100 * worst.iloc[1]:.0f}%); "
-                 f"least: {short[worst.index[-1]]} ({100 * worst.iloc[-1]:.0f}%)", fontsize=13, loc="left")
-    viz.save(fig, path)
-    return M, worst
-
-
-def fig_nearest_train(sh, nn, path):
-    d = sh[["sample_idx", "true_idx", "pred_idx", "correct", "confidence"]].merge(nn, on="sample_idx")
-    d["pct"] = d.groupby("true_idx").best_sim_same_class.rank(pct=True)
-    d["quintile"] = pd.cut(d.pct, [0, .2, .4, .6, .8, 1.0], labels=["1 (least similar)", "2", "3", "4", "5 (most similar)"])
-    q = d.groupby("quintile", observed=True).agg(n=("correct", "size"), err=("correct", lambda s: int((~s).sum())))
-    d["closer"] = np.where(d.best_sim_other_class > d.best_sim_same_class,
-                           "an image of ANOTHER class", "an image of its OWN class")
-    c = d.groupby("closer").agg(n=("correct", "size"), err=("correct", lambda s: int((~s).sum())))
-    dup = d[d.nn_sim > 0.93]
-    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(17, 6.2), gridspec_kw=dict(wspace=0.35))
-    for a, t, xl in [(ax, q, "within-class quintile of similarity to the nearest\nsame-class training image (32x32 pixels)"),
-                     (ax2, c, "the most similar training image (pixel space) is ...")]:
-        rate = 100 * t.err / t.n
-        lo, hi = viz.wilson(t.err, t.n)
-        a.bar(range(len(t)), rate, color=OI["blue"], yerr=[rate - 100 * lo, 100 * hi - rate], capsize=4)
-        for k, (e, n) in enumerate(zip(t.err, t.n)):
-            a.text(k, 100 * hi[k] * 1.03, f"{e}/{n:,}", ha="center", fontsize=11.5)
-        a.set_ylim(0, 100 * hi.max() * 1.22)
-        a.set_xticks(range(len(t)))
-        a.set_xticklabels(t.index, fontsize=12)
-        a.set_xlabel(xl)
-        a.set_ylabel("error rate (%) with 95% CI")
-    ax.set_title("Similarity to the training set barely changes the error rate", fontsize=14)
-    ax2.set_title("Errors are 4x more common when the closest training\nimage belongs to another class", fontsize=14)
-    fig.suptitle(f"Near-duplicates do not explain the 99%: only {len(dup)} test images have a near-copy in training "
-                 f"(r > 0.93), {int((~dup.correct).sum())} of them wrong", x=0.02, ha="left", y=1.04)
-    viz.save(fig, path)
-    return q, c, dup
 
 
 BG_EXCLUDE = {10}   # Corn healthy: close-ups where the leaf fills the frame (green border), so there is no background to test
