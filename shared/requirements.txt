@@ -1,0 +1,24 @@
+# Dataset
+datasets
+huggingface_hub
+
+# Data processing
+numpy
+pandas
+Pillow
+
+# Machine learning evaluation
+scikit-learn
+
+# Visualization
+matplotlib
+seaborn
+
+# Utilities
+tqdm
+
+# Jupyter Notebook
+notebook
+ipykernel
+
+# Pytorch -> manually whatever suits your hardware requirements
