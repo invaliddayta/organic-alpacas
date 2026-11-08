@@ -1,0 +1,33 @@
+{
+    "team_name": "Organic Alpacas",
+    "students": [
+        {
+            "student_id": "k12021216",
+            "first_name": "Nicolas",
+            "last_name": "Madella-Mella",
+            "email": "k12021216@students.jku.at",
+            "github_user": ""
+        },
+        {
+            "student_id": "k11934121",
+            "first_name": "Timo",
+            "last_name": "Wendner",
+            "email": "k11934121@students.jku.at",
+            "github_user": ""
+        },
+        {
+            "student_id": "k12312103",
+            "first_name": "Paul",
+            "last_name": "Mairhofer",
+            "email": "k12312103@students.jku.at",
+            "github_user": "invaliddayta"
+        },
+        {
+            "student_id": "k12111864",
+            "first_name": "Fabian",
+            "last_name": "Matusek",
+            "email": "k12111864@students.jku.at",
+            "github_user": ""
+        }
+    ]
+}

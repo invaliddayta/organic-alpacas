@@ -1,0 +1,17 @@
+# dataset and model weights (too big for git)
+data/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# python / notebooks
+__pycache__/
+*.py[cod]
+.venv/
+.ipynb_checkpoints/
+
+# os / editor
+.DS_Store
+.vscode/
+.idea/

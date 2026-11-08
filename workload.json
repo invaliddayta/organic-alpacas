@@ -1,0 +1,25 @@
+{
+    "team_name": "Organic Alpacas",
+    "students": [
+        {
+            "first_name": "Nicolas",
+            "last_name": "Madella-Mella",
+            "workload": 0.25
+        },
+        {
+            "first_name": "Timo",
+            "last_name": "Wendner",
+            "workload": 0.25
+        },
+        {
+            "first_name": "Paul",
+            "last_name": "Mairhofer",
+            "workload": 0.25
+        },
+        {
+            "first_name": "Fabian",
+            "last_name": "Matusek",
+            "workload": 0.25
+        }
+    ]
+}
