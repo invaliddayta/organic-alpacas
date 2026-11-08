@@ -60,7 +60,8 @@ def short_name(label: str) -> str:
     dis = (dis.replace("_", " ").replace("Tomato ", "").replace("(Black Measles)", "")
            .replace("(Isariopsis Leaf Spot)", "").replace("Cercospora leaf spot ", "")
            .replace("Two-spotted spider mite", "").replace("(Citrus greening)", "")
-           .replace("Haunglongbing", "Huanglongbing").strip())
+           .replace("Haunglongbing", "Huanglongbing")
+           .replace("Yellow Leaf Curl Virus", "Yellow leaf curl").strip())
     return f"{host}: {dis}"
 
 
