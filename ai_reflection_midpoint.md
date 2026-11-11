@@ -25,7 +25,7 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
 
 - **Found by both:** blur and noise hurt most, brightness much less. Their sweep on the full test set gives similar numbers to ours on the 40-per-class subset
   (noise σ 0.10: 42% vs 34%, σ 0.15: 8% vs 10%; brightness ×0.5: 87%, ours ×0.6 / ×0.4: 91% / 67%). Both found that the model still works on the leaf
-  alone (grey background: 80% for them, 86% for us) Both ran into Corn healthy close-ups, where leaf masking fails (0% recall for them, excluded by us).
+  alone (grey background: 80% for them, 86% for us). Both ran into Corn healthy close-ups, where leaf masking fails (0% recall for them, excluded by us).
 - **Only human-only:** class size vs error rate (no clear link), per-class recall drop for each perturbation (Potato healthy loses 81 pp when darker,
   Tomato healthy 100 pp under blur), and the plain list of classes with zero errors. A second segmentation method (rembg) next to GrabCut.
 - **Only AI-aided:** where the errors go (sink classes), errors clustered by leaf, the dark capture session behind the late-blight sink, background swaps
