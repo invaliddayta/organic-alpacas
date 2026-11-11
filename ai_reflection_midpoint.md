@@ -85,6 +85,7 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
   still done by the same agent that made the claims, so it is not independent.
 
 - Time: Paul about 4 h in total (prompt, setup, running and checking the output); Fabian reviewed the result for about 45 min and found no errors.
+  The human-only pair (Nico, Timo) spent about 20 h combined, so roughly 4x the human time for fewer questions but the full test set.
 - The agent's results were easier to check than to produce: numbers are in one file (`key_numbers.json`) and every figure has a script.
 
 ## Confidence in the conclusions
