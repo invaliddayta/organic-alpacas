@@ -6,8 +6,8 @@
 > reflection) was produced by an autonomous coding agent (Claude, run through `pi`) from **one prompt**, with no human input during the run
 > (8 Nov 2026, about 2 h, CPU only). The prompt set the rules (black box only, systematic patterns with controls, render and critique every
 > figure, document all decisions) and the group direction; the agent chose the questions, methods and figures itself. The session record is in
-> `ai-interactions/phase1/2026-11-08-phase1-ai-analysis.md`, the figure log in `ai-interactions/phase1/figure-log.md`. The parts below that
-> depend on the human-only pair are marked *to complete after comparing with the human-only pair*.
+> `ai-interactions/phase1/2026-11-08-phase1-ai-analysis.md`, the figure log in `ai-interactions/phase1/figure-log.md`. The comparison with the
+> human-only pair was added after both pairs had pushed their work (11 Nov).
 
 ## Insights found by one pair but not the other
 
@@ -21,12 +21,21 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
 - Background: foreign background lowers accuracy from 96% to 84%; background alone still gives 12% (chance 2.6%).
 - Near-duplicates do not explain the accuracy; one likely mislabelled image pair in the dataset (test 8252).
 
-*To complete after comparing with the human-only pair:*
+**Comparison with the human-only pair** (Nico, Timo: `phase1/human-only/experiments.ipynb`, `additional_experiments.ipynb`):
 
-- [ ] Which of these did the human-only pair also find? With which method and figure?
-- [ ] What did the human-only pair find that the agent missed (e.g. insights from looking at many images by hand, domain knowledge about the diseases)?
-- [ ] Do the two pairs disagree anywhere (e.g. on how strong the background effect is, or on lighting vs blur)? Who is right, and why?
-- [ ] Which findings are only possible at the agent's scale (130k modified images, region tests, null models), and which only by careful human looking?
+- **Found by both:** blur and noise hurt most, brightness much less. Their sweep on the full test set gives similar numbers to ours on the 40-per-class subset
+  (noise σ 0.10: 42% vs 34%, σ 0.15: 8% vs 10%; brightness ×0.5: 87%, ours ×0.6 / ×0.4: 91% / 67%). Both found that the model still works on the leaf
+  alone (grey background: 80% for them, 86% for us) Both ran into Corn healthy close-ups, where leaf masking fails (0% recall for them, excluded by us).
+- **Only human-only:** class size vs error rate (no clear link), per-class recall drop for each perturbation (Potato healthy loses 81 pp when darker,
+  Tomato healthy 100 pp under blur), and the plain list of classes with zero errors. A second segmentation method (rembg) next to GrabCut.
+- **Only AI-aided:** where the errors go (sink classes), errors clustered by leaf, the dark capture session behind the late-blight sink, background swaps
+  with a same-class control, border-colour k-NN, near-duplicates.
+- **Disagreement:** background only. Their GrabCut version gives 35.6%, their rembg version 9%, ours 12%. GrabCut masks leave the stem and leaf edge in
+  the image (visible in their segmentation figure), so the 35.6% is probably too high; the rembg and our number agree.
+- **Check needed:** in `additional_experiments.ipynb`, `get_acc` stops after ~100 images without shuffling, so each point is the first 128 test
+  images (123 Apple scab, 5 Apple black rot). The curves there describe Apple only, not the whole model.
+- **Agent scale vs human looking:** the 130k modified images, null model and region tests were only realistic for the agent. The human-only pair
+  looked at the segmentation masks directly, which is how the GrabCut leak can be seen at all.
 
 ## Visualization choices
 
@@ -43,10 +52,10 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
   (log of all candidates in `figure-log.md`). Colour-blind safe palettes (Okabe-Ito, viridis); the colour-group colour was changed from vermillion
   to pink to keep it apart from orange.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] Which visualisations did the human-only pair choose for the same questions? Which were easier to read?
-- [ ] Did the agent's figures need too much reading (long titles, many panels) compared with the human-made ones?
+- The human-only pair used a standard normalised 38×38 confusion matrix (the one the agent rejected as almost empty), horizontal bar charts for
+  per-class error and recall drop, and one line plot per perturbation with the baseline as a dashed line.
+- Their charts are quicker to read for "how much does accuracy drop"; ours answer "where do the errors go", but need more reading (longer titles,
+  more panels, a sink column).
 
 ## Breadth and depth of the investigation
 
@@ -59,10 +68,10 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
 - **Not done:** no field images, no test of other architectures, no causal test of the shortcut (that would need retraining, which Phase I excludes),
   perturbations on a subset of 40 images per class only.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] How does the number of questions and conditions compare with the human-only pair? Did they go deeper on fewer questions?
-- [ ] Which of the agent's questions would the human pair not have asked, and vice versa?
+- Human-only: 3 perturbations × 5 strengths on the full test set, foreground/background test with two masking methods, plus a 6-corruption sweep.
+  Fewer questions, but full test set and per-class views.
+- AI-aided: 6 questions, 18 changes × 4 strengths, but on a 40-per-class subset. The agent asked data questions (capture sessions, file names,
+  near-duplicates) the human pair did not; the human pair asked about class size and per-class sensitivity, which the agent did not.
 
 ## Speed vs. extra work to verify AI suggestions
 
@@ -75,10 +84,8 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
 - **Cost of verification:** several self-caught mistakes (below) would have gone into the report without these checks. The verification is
   still done by the same agent that made the claims, so it is not independent.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] How long did Paul and Fabian need to review and check the agent's output (rerun, spot-check images, check numbers)? Did they find errors?
-- [ ] Time spent by the human-only pair for comparable results.
+- Time: Paul about 4 h in total (prompt, setup, running and checking the output); Fabian reviewed the result for about 45 min and found no errors.
+- The agent's results were easier to check than to produce: numbers are in one file (`key_numbers.json`) and every figure has a script.
 
 ## Confidence in the conclusions
 
@@ -91,10 +98,9 @@ What the AI-aided analysis found (details and numbers in `phase1/ai-aided/README
 - **Evidence of a different kind:** input statistics (border-colour k-NN, pixel similarity, leaf colour) describe the data, not the model, and
   are labelled that way.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] Do the human-only pair's results agree? Where they differ, which evidence is stronger?
-- [ ] After review: how confident are Paul and Fabian in conclusions they did not produce themselves?
+- Where both pairs measured the same thing, the numbers agree within a few points (noise, blur, brightness, leaf-only), which raises our confidence
+  in those results. The background-only number differs, and our 12% (supported by their rembg 9%) is the more reliable one.
+- We trust the AI-aided conclusions after review, but the dark-session shortcut is still a hypothesis until Phase II.
 
 ## Failure patterns of AI assistance
 
@@ -110,10 +116,8 @@ Observed in this run (all caught by the agent itself, see the session record):
 - **General risks of an autonomous run** (not observed as errors here, but structural): the agent checks its own work; it decides alone which
   question is interesting; it writes fluent text that can sound more certain than the evidence; and no human saw the images it reasoned about.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] Errors found by Paul and Fabian during review that the agent did not catch.
-- [ ] Places where the agent's framing or wording does not match what the figures show.
+- Fabian's review did not find errors the agent missed.
+- The comparison found one point where the agent was weaker: it only used a 40-per-class subset, where the human pair used the full test set.
 
 ## Best practices
 
@@ -126,6 +130,5 @@ Observed in this run (all caught by the agent itself, see the session record):
 - Test interactive outputs in a real browser.
 - Use the data card and file metadata early: they turned a vague "dark images fail" into a concrete, checkable dataset shortcut.
 
-*To complete after comparing with the human-only pair:*
-
-- [ ] Which practices of the human-only pair should the AI-aided workflow adopt (and the other way round)?
+- AI-aided should adopt: full test set where it is cheap, simple per-class bar charts next to the more complex figures.
+- Human-only could adopt: controls (same-class swap, flip), checking where errors go, and fixed sampling with a shuffle and stated n.
